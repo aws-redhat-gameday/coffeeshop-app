@@ -1,7 +1,5 @@
 # docker build . -t coffeeshop-service -f coffeeshop-service/Dockerfile --platform linux/amd64
-# aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/t7z4c1o2
-# docker tag coffeeshop-service:latest public.ecr.aws/t7z4c1o2/coffeeshop-service:latest
-# docker push public.ecr.aws/t7z4c1o2/coffeeshop-service:latest
+
 FROM maven:3.6.3-openjdk-11-slim
 
 WORKDIR /work
