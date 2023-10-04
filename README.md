@@ -11,11 +11,8 @@
 ```bash
 docker-compose up
 cd barista-node/ && npm install && npm start
-cd barista-kafka/ && mvn compile quarkus:dev
 cd coffeeshop-service/ && mvn compile quarkus:dev
 ```
-
-**Note**: `barista-http` is not required.
 
 ## Clean up
 
