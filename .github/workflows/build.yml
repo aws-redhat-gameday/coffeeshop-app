@@ -12,5 +12,7 @@ jobs:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '11'
       - name: Build with Maven
-        run: mvn -B clean install -Pnative -Dquarkus.native.container-build=true
+        run: |
+          cd coffeeshop-service
+          mvn -B clean install -Pnative -Dquarkus.native.container-build=true
 
