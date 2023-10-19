@@ -1,0 +1,10 @@
+schemaVersion: 2.2.0
+metadata:
+  generateName: coffeeshop-app
+projects:
+  - name: coffeeshop-app
+    git:
+      remotes:
+        origin: "https://github.com/aws-redhat-gameday/coffeeshop-app.git"
+      checkoutFrom:
+        revision: main
