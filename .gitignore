@@ -45,3 +45,9 @@ buildNumber.properties
 .classpath
 .settings
 .java-version
+
+# VSCode
+.vscode
+
+# Lock files
+package-lock.json

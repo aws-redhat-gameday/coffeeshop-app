@@ -1,169 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Queue</title>
+    <title>ROSA Café</title>
 
-    <link rel="stylesheet" type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly.min.css">
-    <link rel="stylesheet" type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly-additions.min.css">
+    <link rel="icon" type="image/ico" href="https://a0.awsstatic.com/main/images/site/fav/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="barista.css">
+
 </head>
+
 <body>
 
-<div class="container">
+    <div class="intro-box">
+        <h2>
+            ROSA Café - Unicorn drinks
+        </h2>
+        <h2>
+            <image class="logo" src="images/gameday_logo.png" />
+        </h2>
 
-    <h1>Order</h1>
+    </div>
 
-    <form id="orderForm" class="form-horizontal">
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="customerName">Name</label>
-            <div class="col-md-6">
-                <input type="text" id="customerName" class="form-control">
-            </div>
+    <div class="wrapper">
+        <div class="fields-box">
+            <form id="orderForm">
+
+                <label for="customerName">
+                    <span>Enter your name</span>
+                    <input type="text" id="customerName" class="form-control" value="Your name...">
+                </label><label for="product">
+                    <span>Choose your coffee</span>
+                    <select id="product">
+                        <option value="ROSA Frappuccino">ROSA Frappuccino</option>
+                        <option value="Chai API">Chai API</option>
+                        <option value="Serverless Hot Chocolate">Serverless Hot Chocolate</option>
+                        <option value="Latte Deploy-o">Latte Deploy-o</option>
+                        <option value="Prod. Release Espresso - Double-shot">Prod. Release Espresso - Double-shot
+                        </option>
+                        <option value="Gitea Green Build">Gitea Green Build</option>
+                        <option value="Mocha Container Sip">Mocha Container Sip</option>
+                    </select>
+                </label><label for="order-button">
+                    <!-- <span>Set items number</span> -->
+                    <button id="order-button" type="submit" class="btn btn-primary">Place order</button>
+
+                </label>
+            </form>
+
         </div>
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="orderMethod">Order method</label>
-            <div class="col-md-10">
-                <select id="orderMethod">
-                    <option value="messaging">Messaging / Kafka</option>
-                </select>
-            </div>
+
+        <div class="table-box">
+            <table>
+                <!-- Dynamic content! -->
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Customer</th>
+                        <th>Exquisite Drink</th>
+                        <th>Prepared By</th>
+                        <th>Orders Queue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="product">Product</label>
-            <div class="col-md-10">
-                <select id="product">
-                    <option value="frappuccino">Frappuccino</option>
-                    <option value="chai">Chai</option>
-                    <option value="hot-chocolate">Hot Chocolate</option>
-                    <option value="latte">Latte</option>
-                    <option value="espresso">Espresso</option>
-                    <option value="mocha">Mocha</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-10 col-md-offset-2">
-                <button id="order-button" type="submit" class="btn btn-primary">Place order</button>
-            </div>
-        </div>
-    </form>
-
-</div>
-
-<div class="container" id="order-result-message"></div>
-
-<div class="container">
-
-    <h1>Queue</h1>
-
-    <table class="table table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th>Customer</th>
-            <th>Product</th>
-            <th>Prepared By</th>
-            <th>State</th>
-        </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-    </table>
-
-</div>
 
 
+    </div>
 
-
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">\
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="barista.js"></script>
 
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/js/patternfly.min.js"></script>
 
-<script>
-
-    $("#orderForm").submit(function(event){
-        const method = $("#orderMethod option:selected").val();
-        const order = {
-            name: $("#customerName").val(),
-            product: $("#product option:selected").val()
-        };
-        console.log("Customer name = " + order.name);
-
-        if(method==="http") {
-            const state = {
-                customer: order.name,
-                beverage: order.product,
-                preparationState: "IN_PROGRESS"
-            };
-            $("tbody").prepend(line(state));
-            $("#order-button").addClass("disabled").attr("disabled", true);
-        }
-
-        event.preventDefault();
-        const post_url = "/" + method; //get form action url
-        const request_method = "POST"; //get form GET/POST method
-        
-        $.ajax({
-            url : post_url,
-            type: request_method,
-            data : JSON.stringify(order),
-            contentType: 'application/json',
-            cache: false
-        }).done(function(response){
-            if(method==="http") {
-                const state = {
-                    orderId: response.orderId,
-                    customer: order.name,
-                    beverage: order.product,
-                    preparedBy: response.preparedBy,
-                    preparationState: response.preparationState
-                };
-                $('tbody tr:first').replaceWith(line(state));
-                $("#order-button").removeClass("disabled").removeAttr("disabled");
-            }
-        }).fail(function(err) {
-            $("#order-result-message").append("<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span class='pficon pficon-close'></span></button><span class='pficon pficon-error-circle-o'></span><strong>Error</strong>" + err.responseText + "</div>");
-            $('tbody tr:last').remove();
-            $("#order-button").removeClass("disabled").removeAttr("disabled");
-            console.error(err);
-        });
-    });
-
-    $(function () {
-        const source = new EventSource("/queue");
-        source.onmessage = function(e) {
-            if (e.data === "{}") {
-                return;
-            }
-            console.log(e);
-            const beverage = JSON.parse(e.data);
-            if(beverage.preparationState==="IN_QUEUE")
-                $("tbody").prepend(line(beverage));
-            if(beverage.preparationState==="READY")
-                $("#"+beverage.orderId).replaceWith(line(beverage));
-            
-        };
-    });
-
-    function line(order) {
-        const id = order.orderId;
-        const product = order.beverage;
-        const customer = order.customer;
-        let barista = "";
-        if (order.preparedBy) {
-            barista = order.preparedBy;
-        }
-        return "<tr id='" + id + "'>" +
-            "<td>" + customer + "</td>" +
-            "<td>" + product + "</td>" +
-            "<td>" + barista + "</td>" +
-            "<td>" + order.preparationState + "</td></tr>";
-    }
-
-
-</script>
 </html>

@@ -14,6 +14,8 @@ cd barista-node/ && npm install && npm start
 cd coffeeshop-service/ && mvn compile quarkus:dev
 ```
 
+Access <http://localhost:8080/>
+
 ## Clean up
 
 ```bash
