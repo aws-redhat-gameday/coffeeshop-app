@@ -1,6 +1,6 @@
 # docker build . -t barista-node --platform linux/amd64
 
-FROM registry.access.redhat.com/ubi8/nodejs-14-minimal
+FROM registry.access.redhat.com/ubi9/nodejs-20-minimal
 
 WORKDIR /app
 
