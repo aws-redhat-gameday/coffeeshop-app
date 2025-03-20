@@ -1,6 +1,6 @@
 # docker build . -t coffeeshop-service --platform linux/amd64
 
-FROM maven:3.6.3-openjdk-11-slim
+FROM docker.io/maven:3.6.3-openjdk-11-slim
 
 WORKDIR /work
 COPY . /work
